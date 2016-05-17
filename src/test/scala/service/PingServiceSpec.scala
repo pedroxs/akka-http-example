@@ -4,6 +4,7 @@ import akka.event.{LoggingAdapter, NoLogging}
 import akka.http.scaladsl.model.{ContentTypes, StatusCodes}
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.typesafe.config.Config
+import model.Ping
 import org.scalatest._
 
 /**

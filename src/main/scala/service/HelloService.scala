@@ -25,7 +25,11 @@ trait HelloService {
           complete("Hello World!")
         }
       } ~
-      path("ops") { get { sys.error("kaput!")}}
+      path("ops") {
+        get {
+          sys.error("kaput!")
+        }
+      }
     }
   }
 }

@@ -7,6 +7,7 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.stream.Materializer
 import com.typesafe.config.Config
+import model.Ping
 import spray.json.DefaultJsonProtocol
 
 import scala.concurrent.ExecutionContextExecutor
@@ -28,14 +29,12 @@ trait PingService extends DefaultJsonProtocol {
   val pingRoutes = {
     logRequest("ping-service") {
       pathPrefix("ping") {
-        path("ip" / Segment) { ip =>
-          get {
-            complete {
-              if(ip.length > 1)
-                Ping(ip)
-              else
-                StatusCodes.BadRequest -> "missing ip"
-            }
+        (get & path("ip" / Segment)) { ip =>
+          complete {
+            if(ip.length > 1)
+              Ping(ip)
+            else
+              StatusCodes.BadRequest -> "missing ip"
           }
         } ~
         get {

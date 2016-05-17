@@ -1,4 +1,4 @@
-package service
+package model
 
 /**
   * Created by joaquim.silveira on 17/05/16.
