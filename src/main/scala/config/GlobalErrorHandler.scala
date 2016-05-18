@@ -1,23 +1,23 @@
 package config
 
-import akka.event.LoggingAdapter
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
+import org.slf4j.LoggerFactory
 
 /**
   * Created by joaquim.silveira on 17/05/16.
   */
 trait GlobalErrorHandler {
 
-  val logger: LoggingAdapter
+  val log = LoggerFactory.getLogger(this.getClass)
 
   def myExceptionHandler: ExceptionHandler =
     ExceptionHandler {
       case ae: ArithmeticException =>
         extractUri { uri =>
-          logger.info(s"Request to $uri could not be handled normally")
+          log.info(s"Request to $uri could not be handled normally")
           complete(HttpResponse(BadRequest, entity = "Bad numbers, bad result!!!"))
         }
       case re: RuntimeException =>
@@ -27,8 +27,8 @@ trait GlobalErrorHandler {
             case Some(x) => s" from client ip: $x"
             case None => ""
           }
-          logger.error(s"Error trying to access $uri$ip. Reason: ${re.getMessage}")
-          if (logger.isDebugEnabled) logger.error(re, "trace")
+          log.error(s"Error trying to access $uri$ip. Reason: ${re.getMessage}")
+          if (log.isDebugEnabled) log.error("trace", re)
           complete(HttpResponse(status = InternalServerError, entity = "OMG!"))
         }
     }
