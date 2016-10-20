@@ -16,7 +16,8 @@ trait HelloService {
           complete("Hello World!")
         } ~
         path("ops") {
-          complete(HttpResponse(BadRequest, entity = "kaput!"))
+          sys.error("kaput!") // this demostrates functionality of GlobalErrorHandler
+          //complete(HttpResponse(BadRequest, entity = "kaput!"))
         }
       }
     }
